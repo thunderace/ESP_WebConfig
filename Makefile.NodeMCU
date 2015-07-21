@@ -1,0 +1,5 @@
+ARDUINO_VARIANT    = nodemcu
+SERIAL_PORT = /dev/ttyACM0
+ARDUINO_LIBS = ESP8266WiFi Ticker ESP8266WebServer ESP8266mDNS EEPROM
+#PROJECT_NAME = ESP_WEBConfig
+include $(HOME)/Esp8266-Arduino-Makefile/Makefile
