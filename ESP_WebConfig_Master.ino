@@ -25,12 +25,7 @@
 
   Version  1.1.1 - 2015-07-12
   First initial version to the public
-
-
-
-  
-  */
-
+*/
 
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
@@ -53,150 +48,115 @@ Include the HTML, STYLE and Script "Pages"
 #include "PAGE_NetworkConfiguration.h"
 #include "example.h"
 
-
 #define ACCESS_POINT_NAME  "ESP"				
 #define ACCESS_POINT_PASSWORD  "12345678" 
-#define AdminTimeOut 0  // Defines the Time in Seconds, when the Admin-Mode will be diabled
-
-
-
+const int adminTimeOut  = 0;  // Defines the Time in Seconds, when the Admin-Mode will be diabled : 0 = disable
 
 void setup ( void ) {
 	EEPROM.begin(512);
 	Serial.begin(115200);
 	delay(500);
 	Serial.println("Starting ES8266");
-	if (!ReadConfig())
-	{
+	if (!readConfig()) {
 		// DEFAULT CONFIG
 		config.ssid = "MYSSID";
 		config.password = "MYPASSWORD";
 		config.dhcp = true;
 		config.IP[0] = 192;config.IP[1] = 168;config.IP[2] = 1;config.IP[3] = 100;
-		config.Netmask[0] = 255;config.Netmask[1] = 255;config.Netmask[2] = 255;config.Netmask[3] = 0;
-		config.Gateway[0] = 192;config.Gateway[1] = 168;config.Gateway[2] = 1;config.Gateway[3] = 1;
+		config.netmask[0] = 255;config.netmask[1] = 255;config.netmask[2] = 255;config.netmask[3] = 0;
+		config.gateway[0] = 192;config.gateway[1] = 168;config.gateway[2] = 1;config.gateway[3] = 1;
 		config.ntpServerName = "0.de.pool.ntp.org";
-		config.Update_Time_Via_NTP_Every =  0;
+		config.ntpUpdatePeriod =  0;
 		config.timezone = -10;
 		config.daylight = true;
-		config.DeviceName = "Not Named";
-		config.AutoTurnOff = false;
-		config.AutoTurnOn = false;
-		config.TurnOffHour = 0;
-		config.TurnOffMinute = 0;
-		config.TurnOnHour = 0;
-		config.TurnOnMinute = 0;
-		WriteConfig();
+		config.deviceName = "Not Named";
+		config.autoTurnOff = false;
+		config.autoTurnOn = false;
+		config.turnOffHour = 0;
+		config.turnOffMinute = 0;
+		config.turnOnHour = 0;
+		config.turnOnMinute = 0;
+		writeConfig();
 		Serial.println("General config applied");
 	}
-	
-	
-	if (AdminEnabled)
-	{
+
+	if (adminEnabled) {
 		WiFi.mode(WIFI_AP_STA);
 		WiFi.softAP( ACCESS_POINT_NAME , ACCESS_POINT_PASSWORD);
-	}
-	else
-	{
+	} else {
 		WiFi.mode(WIFI_STA);
 	}
 
-	ConfigureWifi();
-	
+	configureWifi();
 
-	server.on ( "/", processExample  );
-	server.on ( "/admin/filldynamicdata", filldynamicdata );
-	
-	server.on ( "/favicon.ico",   []() { Serial.println("favicon.ico"); server.send ( 200, "text/html", "" );   }  );
-
-
-	server.on ( "/admin.html", []() { Serial.println("admin.html"); server.send ( 200, "text/html", PAGE_AdminMainPage );   }  );
-	server.on ( "/config.html", send_network_configuration_html );
-	server.on ( "/info.html", []() { Serial.println("info.html"); server.send ( 200, "text/html", PAGE_Information );   }  );
-	server.on ( "/ntp.html", send_NTP_configuration_html  );
-	server.on ( "/general.html", send_general_html  );
-//	server.on ( "/example.html", []() { server.send ( 200, "text/html", PAGE_EXAMPLE );  } );
-	server.on ( "/style.css", []() { Serial.println("style.css"); server.send ( 200, "text/plain", PAGE_Style_css );  } );
-	server.on ( "/microajax.js", []() { Serial.println("microajax.js"); server.send ( 200, "text/plain", PAGE_microajax_js );  } );
-	server.on ( "/admin/values", send_network_configuration_values_html );
-	server.on ( "/admin/connectionstate", send_connection_state_values_html );
-	server.on ( "/admin/infovalues", send_information_values_html );
-	server.on ( "/admin/ntpvalues", send_NTP_configuration_values_html );
-	server.on ( "/admin/generalvalues", send_general_configuration_values_html);
-	server.on ( "/admin/devicename",     send_devicename_value_html);
- 	server.onNotFound ( []() { Serial.println("Page Not Found"); server.send ( 400, "text/html", "Page not Found" );   }  );
+	server.on( "/", processExample  );
+	server.on( "/admin/filldynamicdata", filldynamicdata );
+	server.on( "/favicon.ico",   []() { Serial.println("favicon.ico"); server.send ( 200, "text/html", "" );   }  );
+	server.on( "/admin.html", []() { Serial.println("admin.html"); server.send ( 200, "text/html", PAGE_AdminMainPage );   }  );
+	server.on( "/config.html", send_network_configuration_html );
+	server.on( "/info.html", []() { Serial.println("info.html"); server.send ( 200, "text/html", PAGE_Information );   }  );
+	server.on( "/ntp.html", send_NTP_configuration_html  );
+	server.on( "/general.html", send_general_html  );
+//	server.on( "/example.html", []() { server.send ( 200, "text/html", PAGE_EXAMPLE );  } );
+	server.on( "/style.css", []() { Serial.println("style.css"); server.send ( 200, "text/plain", PAGE_Style_css );  } );
+	server.on( "/microajax.js", []() { Serial.println("microajax.js"); server.send ( 200, "text/plain", PAGE_microajax_js );  } );
+	server.on( "/admin/values", send_network_configuration_values_html );
+	server.on( "/admin/connectionstate", send_connection_state_values_html );
+	server.on( "/admin/infovalues", send_information_values_html );
+	server.on( "/admin/ntpvalues", send_NTP_configuration_values_html );
+	server.on( "/admin/generalvalues", send_general_configuration_values_html);
+	server.on( "/admin/devicename",     send_devicename_value_html);
+ 	server.onNotFound( []() { Serial.println("Page Not Found"); server.send ( 400, "text/html", "Page not Found" );   }  );
 	server.begin();
 	Serial.println( "HTTP server started" );
-	tkSecond.attach(1,Second_Tick);
+	tkSecond.attach(1,secondTick);
 	UDPNTPClient.begin(2390);  // Port for NTP receive
 }
 
  
 void loop ( void ) {
-	if (AdminEnabled)
-	{
-		if (AdminTimeOut != 0 && AdminTimeOutCounter > AdminTimeOut)
-		{
-			 AdminEnabled = false;
-			 Serial.println("Admin Mode disabled!");
-			 WiFi.mode(WIFI_STA);
+	if (adminEnabled) {
+		if (adminTimeOut != 0 && adminTimeOutCounter > adminTimeOut) {
+			adminEnabled = false;
+			Serial.println("Admin Mode disabled!");
+			WiFi.mode(WIFI_STA);
 		}
 	}
-	if (config.Update_Time_Via_NTP_Every  > 0 )
-	{
-		if (cNTP_Update > 5 && firstStart)
-		{
+	if (config.ntpUpdatePeriod  > 0 ) {
+		if (cNTP_Update > 5 && firstStart) {
 			NTPRefresh();
 			cNTP_Update =0;
 			firstStart = false;
-		}
-		else if ( cNTP_Update > (config.Update_Time_Via_NTP_Every * 60) )
-		{
-
-			NTPRefresh();
-			cNTP_Update =0;
+		} else {
+			if (cNTP_Update > (config.ntpUpdatePeriod * 60)) {
+				NTPRefresh();
+				cNTP_Update =0;
+			}
 		}
 	}
 
-	if(DateTime.minute != Minute_Old)
-	{
-		 Minute_Old = DateTime.minute;
-		 if (config.AutoTurnOn)
-		 {
-			 if (DateTime.hour == config.TurnOnHour && DateTime.minute == config.TurnOnMinute)
-			 {
-				  Serial.println("SwitchON");
-			 }
-		 }
-
-
-		 Minute_Old = DateTime.minute;
-		 if (config.AutoTurnOff)
-		 {
-			 if (DateTime.hour == config.TurnOffHour && DateTime.minute == config.TurnOffMinute)
-			 {
-				  Serial.println("SwitchOff");
-			 }
-		 }
+	if (dateTime.minute != minuteOld) {
+		minuteOld = dateTime.minute;
+		if (config.autoTurnOn) {
+			if (dateTime.hour == config.turnOnHour && dateTime.minute == config.turnOnMinute) {
+				Serial.println("SwitchON");
+			}
+		}
+		minuteOld = dateTime.minute;
+		if (config.autoTurnOff) {
+			if (dateTime.hour == config.turnOffHour && dateTime.minute == config.turnOffMinute) {
+				Serial.println("SwitchOff");
+			}
+		}
 	}
 	server.handleClient();
-
-
 	/*
 	*    Your Code here
 	*/
-
-	if (Refresh)  
-	{
-		Refresh = false;
-		///Serial.println("Refreshing...");
-		 //Serial.printf("FreeMem:%d %d:%d:%d %d.%d.%d \n",ESP.getFreeHeap() , DateTime.hour,DateTime.minute, DateTime.second, DateTime.year, DateTime.month, DateTime.day);
+	if (refresh) {
+		refresh = false;
+		//Serial.println("Refreshing...");
+		//Serial.printf("FreeMem:%d %d:%d:%d %d.%d.%d \n",ESP.getFreeHeap() , DateTime.hour,DateTime.minute, DateTime.second, DateTime.year, DateTime.month, DateTime.day);
 	}
-
-
-
- 
-
-
 }
 

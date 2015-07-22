@@ -67,52 +67,43 @@ function load(e,t,n){if("js"==t){var a=document.createElement("script");a.src=e,
 
 
 // Functions for this Page
-void send_devicename_value_html()
-{
-		
+void send_devicename_value_html() {
 	String values ="";
-	values += "devicename|" + (String) config.DeviceName + "|div\n";
+	values += "devicename|" + (String) config.deviceName + "|div\n";
 	server.send ( 200, "text/plain", values);
 	Serial.println(__FUNCTION__); 
-	
 }
 
-void send_general_html()
-{
-	
-	if (server.args() > 0 )  // Save Settings
-	{
-		config.AutoTurnOn = false;
-		config.AutoTurnOff = false;
+void send_general_html() {
+	if (server.args() > 0) { // Save Settings
+		config.autoTurnOn = false;
+		config.autoTurnOff = false;
 		String temp = "";
 		for ( uint8_t i = 0; i < server.args(); i++ ) {
-			if (server.argName(i) == "devicename") config.DeviceName = urldecode(server.arg(i)); 
-			if (server.argName(i) == "tonenabled") config.AutoTurnOn = true; 
-			if (server.argName(i) == "toffenabled") config.AutoTurnOff = true; 
-			if (server.argName(i) == "tonhour") config.TurnOnHour =  server.arg(i).toInt(); 
-			if (server.argName(i) == "tonminute") config.TurnOnMinute =  server.arg(i).toInt(); 
-			if (server.argName(i) == "toffhour") config.TurnOffHour =  server.arg(i).toInt(); 
-			if (server.argName(i) == "toffminute") config.TurnOffMinute =  server.arg(i).toInt(); 
+			if (server.argName(i) == "devicename") config.deviceName = urldecode(server.arg(i)); 
+			if (server.argName(i) == "tonenabled") config.autoTurnOn = true; 
+			if (server.argName(i) == "toffenabled") config.autoTurnOff = true; 
+			if (server.argName(i) == "tonhour") config.turnOnHour =  server.arg(i).toInt(); 
+			if (server.argName(i) == "tonminute") config.turnOnMinute =  server.arg(i).toInt(); 
+			if (server.argName(i) == "toffhour") config.turnOffHour =  server.arg(i).toInt(); 
+			if (server.argName(i) == "toffminute") config.turnOffMinute =  server.arg(i).toInt(); 
 		}
-		WriteConfig();
+		writeConfig();
 		firstStart = true;
 	}
 	server.send ( 200, "text/html", PAGE_AdminGeneralSettings ); 
 	Serial.println(__FUNCTION__); 
-	
-	
 }
 
-void send_general_configuration_values_html()
-{
+void send_general_configuration_values_html() {
 	String values ="";
-	values += "devicename|" +  (String)  config.DeviceName +  "|input\n";
-	values += "tonhour|" +  (String)  config.TurnOnHour +  "|input\n";
-	values += "tonminute|" +   (String) config.TurnOnMinute +  "|input\n";
-	values += "toffhour|" +  (String)  config.TurnOffHour +  "|input\n";
-	values += "toffminute|" +   (String)  config.TurnOffMinute +  "|input\n";
-	values += "toffenabled|" +  (String) (config.AutoTurnOff ? "checked" : "") + "|chk\n";
-	values += "tonenabled|" +  (String) (config.AutoTurnOn ? "checked" : "") + "|chk\n";
+	values += "devicename|" +  (String)  config.deviceName +  "|input\n";
+	values += "tonhour|" +  (String)  config.turnOnHour +  "|input\n";
+	values += "tonminute|" +   (String) config.turnOnMinute +  "|input\n";
+	values += "toffhour|" +  (String)  config.turnOffHour +  "|input\n";
+	values += "toffminute|" +   (String)  config.turnOffMinute +  "|input\n";
+	values += "toffenabled|" +  (String) (config.autoTurnOff ? "checked" : "") + "|chk\n";
+	values += "tonenabled|" +  (String) (config.autoTurnOn ? "checked" : "") + "|chk\n";
 	server.send ( 200, "text/plain", values);
 	Serial.println(__FUNCTION__); 
 }
