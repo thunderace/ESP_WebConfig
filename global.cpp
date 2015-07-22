@@ -9,8 +9,11 @@ unsigned long unixTimestamp = 0;								// GLOBALTIME  ( Will be set by NTP)
 boolean refresh = false; // For Main Loop, to refresh things like GPIO / WS2812
 int cNTP_Update = 0;											// Counter for Updating the time via NTP
 Ticker tkSecond;												// Second - Timer for Updating Datetime Structure
-boolean adminEnabled = true;		// Enable Admin Mode for a given Time
+boolean adminEnabled = false;		// Enable Admin Mode for a given Time
+const int adminTimeOut  = 0;  // Defines the Time in Seconds, when the Admin-Mode will be diabled : 0 = disable
+
 byte minuteOld = 100;				// Helpvariable for checking, when a new Minute comes up (for Auto Turn On / Off)
+
 
 
 strConfig config;

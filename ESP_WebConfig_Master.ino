@@ -48,9 +48,6 @@ Include the HTML, STYLE and Script "Pages"
 #include "PAGE_NetworkConfiguration.h"
 #include "example.h"
 
-#define ACCESS_POINT_NAME  "ESP"				
-#define ACCESS_POINT_PASSWORD  "12345678" 
-const int adminTimeOut  = 0;  // Defines the Time in Seconds, when the Admin-Mode will be diabled : 0 = disable
 
 void setup ( void ) {
 	EEPROM.begin(512);
@@ -78,6 +75,7 @@ void setup ( void ) {
 		config.turnOnMinute = 0;
 		writeConfig();
 		Serial.println("General config applied");
+		adminEnabled = true;
 	}
 
 	if (adminEnabled) {

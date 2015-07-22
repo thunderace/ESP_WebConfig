@@ -21,6 +21,10 @@ extern int cNTP_Update;											// Counter for Updating the time via NTP
 extern Ticker tkSecond;												// Second - Timer for Updating Datetime Structure
 extern boolean adminEnabled;		// Enable Admin Mode for a given Time
 extern byte minuteOld;				// Helpvariable for checking, when a new Minute comes up (for Auto Turn On / Off)
+extern const int adminTimeOut;  // Defines the Time in Seconds, when the Admin-Mode will be diabled : 0 = disable
+
+#define ACCESS_POINT_NAME  "ESP"				
+#define ACCESS_POINT_PASSWORD  "12345678" 
 
 
 
