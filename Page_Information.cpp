@@ -1,10 +1,6 @@
-#ifndef PAGE_INFOMATION_H
-#define PAGE_INFOMATION_H
+#include "global.h"
 
-//
-//   The HTML PAGE
-//
-const char PAGE_Information[] PROGMEM = R"=====(
+const char PAGE_Information[] = R"=====(
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -63,6 +59,9 @@ void send_information_values_html () {
 	values += "x_ntp|" +  (String)dateTime.hour + ":" + (String)dateTime.minute +  ":"  + (String)dateTime.second + " " + (String)dateTime.year + "-" + 
 												(String)dateTime.month + "-" + (String)dateTime.day +  "|div\n";
 	server.send ( 200, "text/plain", values);
-	Serial.println(__FUNCTION__); 
+	//Serial.println(__FUNCTION__); 
 }
-#endif
+
+void sendInformationPage() {
+	server.send(200, "text/html", PAGE_Information); 
+}

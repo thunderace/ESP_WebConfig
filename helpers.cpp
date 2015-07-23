@@ -16,6 +16,15 @@ boolean summertime(int year, byte month, byte day, byte hour, byte tzHours) {
    return false;
 }
 
+
+class EEPROMString : public String {
+public:
+  void EEPROMWrite(int startAddress);
+  void EEPROMRead(int startAddress);
+  void setMaxSize(int maxSize);
+  unsigned int getMaxSize();
+};
+
 //
 // Check the Values is between 0-255
 //

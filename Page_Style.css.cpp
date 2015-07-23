@@ -1,5 +1,6 @@
+#include "global.h"
 
-const char PAGE_Style_css[] PROGMEM = R"=====(
+const char PAGE_Style_css[] = R"=====(
 body { color: #000000; font-family: avenir, helvetica, arial, sans-serif;  letter-spacing: 0.15em;} 
 hr {    background-color: #eee;    border: 0 none;   color: #eee;    height: 1px; } 
 .btn, .btn:link, .btn:visited {  
@@ -65,4 +66,9 @@ color: #fff;
 			max-width: 16em !important; } 
 	}
 )=====";
+ 
+ 
+void sendCSS() {
+	server.send(200, "text/css", PAGE_Style_css); 
+}
  

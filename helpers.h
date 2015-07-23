@@ -25,6 +25,7 @@ boolean summertime(int year, byte month, byte day, byte hour, byte tzHours);
 
 boolean checkRange(String Value);
 
+
 void EEPROMWriteString(int beginaddress, String string);
 
 String EEPROMReadString(int beginaddress);

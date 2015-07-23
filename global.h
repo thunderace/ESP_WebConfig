@@ -8,6 +8,7 @@
 #include <EEPROM.h>
 #include <WiFiUdp.h>
 
+#include "user.h"
 #include "helpers.h"
 
 extern ESP8266WebServer server;									// The Webserver
@@ -20,48 +21,49 @@ extern boolean refresh; // For Main Loop, to refresh things like GPIO / WS2812
 extern int cNTP_Update;											// Counter for Updating the time via NTP
 extern Ticker tkSecond;												// Second - Timer for Updating Datetime Structure
 extern boolean adminEnabled;		// Enable Admin Mode for a given Time
-extern byte minuteOld;				// Helpvariable for checking, when a new Minute comes up (for Auto Turn On / Off)
 extern const int adminTimeOut;  // Defines the Time in Seconds, when the Admin-Mode will be diabled : 0 = disable
 
 #define ACCESS_POINT_NAME  "ESP"				
 #define ACCESS_POINT_PASSWORD  "12345678" 
 
 
+#define NTP_SERVERNAME_MAX_SIZE	172
+#define DEVICE_NAME_MAX_SIZE		20
+#define SSID_MAX_SIZE						32
+#define WIFI_PASSWORD_MAX_SIZE		64
+#define DEVICE_NAME_MAX_SIZE		20
 
-typedef struct _strConfig {
-	String ssid;
-	String password;
+typedef struct _SystemConfig {
+	char header[3];
+	char ssid[SSID_MAX_SIZE + 1];  // max size : 32
+	char wifiPassword[WIFI_PASSWORD_MAX_SIZE + 1]; // max size : 64
 	byte  IP[4];
 	byte  netmask[4];
 	byte  gateway[4];
 	boolean dhcp;
-	String ntpServerName;
+	char ntpServerName[NTP_SERVERNAME_MAX_SIZE + 1]; // max size 172
 	long ntpUpdatePeriod;
 	long timezone;
 	boolean daylight;
-	String deviceName;
-	boolean autoTurnOff;
-	boolean autoTurnOn;
-	byte turnOffHour;
-	byte turnOffMinute;
-	byte turnOnHour;
-	byte turnOnMinute;
-	byte ledR;
-	byte ledG;
-	byte ledB;
-} strConfig;
+	char deviceName[DEVICE_NAME_MAX_SIZE + 1];   // max size 20
+	UserConfig userConfig;
+} SystemConfig;
 
-extern strConfig config;
+
+//extern strConfig config;
+extern SystemConfig config;
 
 // CONFIGURATION
 void configureWifi();
+void initConfig();
 void writeConfig();
-boolean readConfig();
+void readConfig();
+void copyConfigString(char *dest, const char *src, int length);
 // !CONFIGURATION
 
 // NTP
 //byte packetBuffer[NTP_PACKET_SIZE]; 
 void NTPRefresh();
-void secondTick();
+void tickHandler();
 // !NTP
 #endif

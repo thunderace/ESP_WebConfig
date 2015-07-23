@@ -1,0 +1,4 @@
+ARDUINO_VARIANT    = nodemcu2
+SERIAL_PORT = /dev/ttyUSB0
+ARDUINO_LIBS = ESP8266WiFi Ticker ESP8266WebServer EEPROM
+include $(HOME)/Esp8266-Arduino-Makefile/Makefile
