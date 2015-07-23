@@ -5,4 +5,4 @@ New :
   - new user specific code
   - potential bug fixes
   - new config support (more flexible and less dangerous for eeprom)
-  - 
+  - PROGMEM removed (crash on nodeMCU) 
