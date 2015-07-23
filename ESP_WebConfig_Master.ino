@@ -49,10 +49,13 @@ void setup ( void ) {
 	
 	EEPROM.begin(eepromSize);
 	Serial.begin(115200);
+	Serial.setDebugOutput(true);
 	delay(500);
 
 	Serial.println("Starting ES8266");
 	readConfig();
+
+	adminEnabled = true;
 
 	if (adminEnabled) {
 		WiFi.mode(WIFI_AP_STA);

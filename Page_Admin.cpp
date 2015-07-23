@@ -8,6 +8,7 @@ const char PAGE_AdminMainPage[]  = R"=====(
 <a href="config.html" style="width:250px" class="btn btn--m btn--blue" >Network Configuration</a><br>
 <a href="info.html"   style="width:250px"  class="btn btn--m btn--blue" >Network Information</a><br>
 <a href="ntp.html"   style="width:250px"  class="btn btn--m btn--blue" >NTP Settings</a><br>
+<a href="/"   style="width:250px"  class="btn btn--m btn--blue" >User page</a><br>
 
 
 <script>
