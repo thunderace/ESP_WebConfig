@@ -3,9 +3,11 @@
 
 typedef struct _UserConfig {
 	// put your user data here
-	// do not use String, only char arrays, long, boolean, bytes, int
 } UserConfig;
 
 extern void userInit();
 extern void userLoop();
+extern void userInitConfig();
+extern void userLoadConfig(JsonObject&);
+extern void userSaveConfig(JsonObject&);
 #endif

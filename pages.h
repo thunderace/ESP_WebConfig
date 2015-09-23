@@ -8,7 +8,6 @@ void sendJavascript();
 void send_NTP_configuration_html();
 void send_NTP_configuration_values_html();
 
-
 // Network config
 void send_network_configuration_html();
 void send_network_configuration_values_html();

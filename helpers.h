@@ -4,7 +4,6 @@
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
 #include <Ticker.h>
-#include <EEPROM.h>
 #include <WiFiUdp.h>
 
 typedef struct  _DateTime {
@@ -26,17 +25,10 @@ boolean summertime(int year, byte month, byte day, byte hour, byte tzHours);
 boolean checkRange(String Value);
 
 
-void EEPROMWriteString(int beginaddress, String string);
-
-String EEPROMReadString(int beginaddress);
-
-void EEPROMWritelong(int address, long value);
-
-long EEPROMReadlong(long address);
-
 void convertUnixTimeStamp( unsigned long timeStamp, DateTime* dateTime);
 
 String getMacAddress();
+String getAPSSID();
 
 // convert a single hex digit character to its integer value (from https://code.google.com/p/avr-netino/)
 unsigned char h2int(char c);

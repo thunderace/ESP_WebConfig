@@ -16,15 +16,6 @@ boolean summertime(int year, byte month, byte day, byte hour, byte tzHours) {
    return false;
 }
 
-
-class EEPROMString : public String {
-public:
-  void EEPROMWrite(int startAddress);
-  void EEPROMRead(int startAddress);
-  void setMaxSize(int maxSize);
-  unsigned int getMaxSize();
-};
-
 //
 // Check the Values is between 0-255
 //
@@ -36,51 +27,6 @@ boolean checkRange(String Value) {
 	}
 }
 
-void EEPROMWriteString(int beginaddress, String string) {
-	char charBuf[string.length()+1];
-	string.toCharArray(charBuf, string.length()+1);
-	for (int t=  0; t<sizeof(charBuf);t++) {
-		EEPROM.write(beginaddress + t,charBuf[t]);
-	}
-}
-
-String EEPROMReadString(int beginaddress) {
-	byte counter=0;
-	char rChar;
-	String retString = "";
-	while (1) {
-		rChar = EEPROM.read(beginaddress + counter);
-		if (rChar == 0) break;
-		if (counter > 31) break;
-		counter++;
-		retString.concat(rChar);
-	}
-	return retString;
-}
-
-void EEPROMWritelong(int address, long value) {
-  byte four = (value & 0xFF);
-  byte three = ((value >> 8) & 0xFF);
-  byte two = ((value >> 16) & 0xFF);
-  byte one = ((value >> 24) & 0xFF);
-
-  //Write the 4 bytes into the eeprom memory.
-  EEPROM.write(address, four);
-  EEPROM.write(address + 1, three);
-  EEPROM.write(address + 2, two);
-  EEPROM.write(address + 3, one);
-}
-
-long EEPROMReadlong(long address) {
-  //Read the 4 bytes from the eeprom memory.
-  long four = EEPROM.read(address);
-  long three = EEPROM.read(address + 1);
-  long two = EEPROM.read(address + 2);
-  long one = EEPROM.read(address + 3);
-
-  //Return the recomposed long by using bitshift.
-  return ((four << 0) & 0xFF) + ((three << 8) & 0xFFFF) + ((two << 16) & 0xFFFFFF) + ((one << 24) & 0xFFFFFFFF);
-}
 
 void convertUnixTimeStamp( unsigned long timeStamp, DateTime* dateTime) {
 	uint8_t year;
@@ -132,12 +78,30 @@ void convertUnixTimeStamp( unsigned long timeStamp, DateTime* dateTime) {
 
 String getMacAddress() {
 	uint8_t mac[6];
-	char macStr[18] = {0};
+	char macStr[18];
 	WiFi.macAddress(mac);
   sprintf(macStr, "%02X:%02X:%02X:%02X:%02X:%02X", mac[0],  mac[1], mac[2], mac[3], mac[4], mac[5]);
   return  String(macStr);
 }
 
+String getAPSSID() {
+	uint8_t mac[6];
+	char macStr[18];
+	WiFi.macAddress(mac);
+  sprintf(macStr, "ESP%02X%02X%02X%02X%02X%02X", mac[0],  mac[1], mac[2], mac[3], mac[4], mac[5]);
+  return  String(macStr);
+}
+
+
+/*
+String getMacAddress() {
+	uint8_t mac[6];
+	char macStr[18] = {0};
+	WiFi.macAddress(mac);
+  sprintf(macStr, "%02X:%02X:%02X:%02X:%02X:%02X", mac[0],  mac[1], mac[2], mac[3], mac[4], mac[5]);
+  return  String(macStr);
+}
+*/
 // convert a single hex digit character to its integer value (from https://code.google.com/p/avr-netino/)
 unsigned char h2int(char c) {
 	if (c >= '0' && c <='9'){
