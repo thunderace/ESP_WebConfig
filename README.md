@@ -1,6 +1,18 @@
 # ESP_WebConfig
 fork of http://www.john-lassen.de/index.php/projects/esp-8266-arduino-ide-webconfig
 
+## Warning
+In order to comile with the Arduino IDE, you have to add this on top of ESP_Webconfig.ino (thx to  RattyDAVE) :
+```
+#include <ArduinoJson.h>
+#include <ESP8266WiFi.h>
+#include <WiFiClient.h>
+#include <ESP8266WebServer.h>
+#include <Ticker.h>
+#include <WiFiUdp.h>
+```
+
+
 ## Changelog
 23/09/2015 :
   - big memory update - you need the last ESP8266 Arduino IDE (not stable)
