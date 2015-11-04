@@ -2,7 +2,7 @@
 fork of http://www.john-lassen.de/index.php/projects/esp-8266-arduino-ide-webconfig
 
 ## Warning
-In order to buildthis with the Arduino IDE, you have to add this on top of ESP_Webconfig.ino (thx to  RattyDAVE) :
+In order to build this with the Arduino IDE, you have to add this on top of ESP_Webconfig.ino (thx to  RattyDAVE) :
 ```
 #include <ArduinoJson.h>
 #include <ESP8266WiFi.h>
