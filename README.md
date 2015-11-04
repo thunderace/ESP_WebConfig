@@ -2,10 +2,12 @@
 fork of http://www.john-lassen.de/index.php/projects/esp-8266-arduino-ide-webconfig
 
 ## Changelog
+04/11/2015 :
+  - headers required to build with Arduino IDE added
 23/09/2015 :
   - big memory update - you need the last ESP8266 Arduino IDE (not stable)
-  - You need ArduinoJson library : `https://github.com/bblanchon/ArduinoJson`
-  - You can use the ESP8266 Makefile to build with command line : `https://github.com/thunderace/Esp8266-Arduino-Makefile`
+  - you need ArduinoJson library : `https://github.com/bblanchon/ArduinoJson`
+  - you can use the ESP8266 Makefile to build with command line : `https://github.com/thunderace/Esp8266-Arduino-Makefile`
 23/07/2015 
   - code and file organisation cleanup
   - new user specific code
